@@ -3,7 +3,7 @@ import pandas as pd
 
 data = Path('data/raw/netflix_titles.csv')
 
-def extract(data):
+def extract(data): 
     
     if not data.exists():
         raise FileNotFoundError
@@ -22,7 +22,7 @@ def load_bronze(df):
 
 
 df = extract(data)
-print(load_bronze(df))
+dfp = load_bronze(df)
 
 print(df.info())
 print(df.isnull().sum())
