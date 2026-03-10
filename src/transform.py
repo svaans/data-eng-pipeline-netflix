@@ -1,7 +1,8 @@
 import pandas as pd
-from pathlib import Path
-from ingest import  dfp
+from ingest import create_bronze
+from settings import PROJECT_ROOT
 
+dfp = create_bronze()
 
 def clean_silver(dfp):
     df_silver = pd.read_parquet(dfp)
@@ -14,12 +15,19 @@ def clean_silver(dfp):
     return df_clean
 
 def save_silver(df_clean):
-    silver_dir = Path('data/silver/')
-    silver_path = Path(silver_dir /'netflix.parquet')
+    silver_dir = PROJECT_ROOT / "data" / "silver"
+    silver_path = silver_dir /'netflix.parquet'
     silver_dir.mkdir(parents=True, exist_ok=True)
 
     return df_clean.to_parquet(silver_path)
 
 
-df_clean = clean_silver(dfp)
-save_silver(df_clean)
+def create_silver():
+    df_clean = clean_silver(dfp)
+    save_silver(df_clean)
+    silver_path = PROJECT_ROOT / "data" / "silver" / "netflix.parquet"
+    return silver_path
+
+def load_silver():
+    df = pd.read_parquet(create_silver())
+    return df
